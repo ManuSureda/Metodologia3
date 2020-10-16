@@ -19,7 +19,7 @@ class Property(models.Model):
     title = models.CharField(max_length=500)
     description = models.CharField(max_length=1000)
     maxPax = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(100)])
-    image = models.ImageField(upload_to='property')
+    image = models.ImageField(upload_to='property', null=True)
     dailyCost = models.FloatField(validators=[MinValueValidator(0.0)], default=0.0)
 
     class Meta:
