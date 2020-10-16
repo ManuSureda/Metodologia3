@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TP</title>
+</head>
+<body>
+{% block body %}
+<h1>Listado de Ciudades</h1>
+<table border="2">
+    <thead>
+        <tr>
+            <th> Nombre ciudad </th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for city in object_list %}
+        <tr>
+            <td> {{ city.name }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock body %}
+</body>
+</html>

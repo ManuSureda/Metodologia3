@@ -6,6 +6,13 @@ class City(models.Model):
     idCity = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
 
+    class Meta:
+        verbose_name_plural = 'Cities'
+
+    def __str__(self):
+        return self.name
+
+
 class Property(models.Model):
     idProperty = models.AutoField(primary_key=True)
     city = models.ForeignKey(City, null=True, on_delete=models.SET_NULL)
@@ -15,12 +22,22 @@ class Property(models.Model):
     image = models.ImageField(upload_to='property')
     dailyCost = models.FloatField(validators=[MinValueValidator(0.0)], default=0.0)
 
+    class Meta:
+        verbose_name_plural = 'Properties'
+
+    def __str__(self):
+        return self.title
+
 
 class RentalDate(models.Model):
     idRentalDate = models.AutoField(primary_key=True)
     dateFrom = models.DateField()
     dateTo = models.DateField()
     property = models.ForeignKey(Property, null=True, on_delete=models.SET_NULL)
+
+    class Meta:
+        verbose_name_plural = 'RentalDates'
+
 
 class Reservation(models.Model):
     idReservation = models.AutoField(primary_key=True)
@@ -31,3 +48,9 @@ class Reservation(models.Model):
     dateFrom = models.DateField()
     dateTo = models.DateField()
     totalCost = models.FloatField(validators=[MinValueValidator(0.0)], default=0.0)
+
+    class Meta:
+        verbose_name_plural = 'Reservations'
+
+    def __str__(self):
+        return self.email

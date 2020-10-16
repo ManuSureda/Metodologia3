@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from aplications.rentalProperty.views import CityList
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', CityList.as_view(), name='index'),
 ]
