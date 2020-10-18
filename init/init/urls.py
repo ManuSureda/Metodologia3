@@ -17,12 +17,12 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from aplications.rentalProperty.views import PropertyList, PropertyCreate, propertyReserveView
+from aplications.rentalProperty.views import PropertyList, reserve
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', PropertyList.as_view(), name='index'),
-    path('reserve/<int:pk>/', propertyReserveView.as_view(), name='propertyReserveView'),
+    path('reserve/<int:pk>/', reserve.as_view(), name='reserve'),
 
 ]
 

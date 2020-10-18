@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Sogo Hotel by Colorlib.com</title>
+    <title>Property Rent UTN</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -70,43 +70,43 @@
       <div class="container">
         <div class="row">
           <div class="col-md-7" data-aos="fade-up" data-aos-delay="100">
-            
-            <form action="#" method="post" class="bg-white p-md-5 p-4 mb-5 border">
+
+
+            <form method="post" class="bg-white p-md-5 p-4 mb-5 border"> {% csrf_token %}
+
               <div class="row">
                 <div class="col-md-12 form-group">
-                  <label class="text-black font-weight-bold" for="email">Email</label>
-                  <input type="email" id="email" class="form-control ">
+                  <label class="text-black font-weight-bold">Email</label>
+                  {{ form.email }}
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-md-6 form-group">
                   <label class="text-black font-weight-bold">Date From</label>
-                  <input type="text" id="checkin_date" class="form-control">
+                  {{ form.dateFrom }}
                 </div>
                 <div class="col-md-6 form-group">
                   <label class="text-black font-weight-bold">Date To</label>
-                  <input type="text" id="checkout_date" class="form-control">
+                  {{ form.dateTo }}
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-md-6 form-group">
                   <label class="font-weight-bold text-black">First Name</label>
-                  <input type="text" id="name" class="form-control">
+                  {{ form.name }}
                 </div>
                 <div class="col-md-6 form-group">
                   <label class="font-weight-bold text-black">Last Name</label>
-                  <input type="text" id="lastname" class="form-control">
+                  {{ form.lastName }}
                 </div>
               </div>
 
-              
-
               <div class="row mb-4">
                 <div class="col-md-12 form-group">
-                  <label class="text-black font-weight-bold" for="message">Description</label>
-                  <textarea name="message" id="message" class="form-control " cols="30" rows="8"> {{ object.description }} </textarea>
+                  <label class="text-black font-weight-bold">Total Cost</label>
+                  {{ form.totalCost }}
                 </div>
               </div>
               <div class="row">
@@ -129,6 +129,8 @@
         </div>
       </div>
     </section>
+
+
 
     
     <section class="section bg-image overlay">

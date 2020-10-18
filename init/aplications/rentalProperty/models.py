@@ -42,9 +42,9 @@ class RentalDate(models.Model):
 class Reservation(models.Model):
     idReservation = models.AutoField(primary_key=True)
     property = models.ForeignKey(Property, null=True, on_delete=models.SET_NULL)
-    name = models.CharField(max_length = 120)
+    name = models.CharField(max_length=120)
     lastName = models.CharField(max_length=120)
-    email = models.EmailField(max_length = 200)
+    email = models.EmailField(max_length=200)
     dateFrom = models.DateField()
     dateTo = models.DateField()
     totalCost = models.FloatField(validators=[MinValueValidator(0.0)], default=0.0)
