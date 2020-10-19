@@ -25,10 +25,6 @@ class Property(models.Model):
     class Meta:
         verbose_name_plural = 'Properties'
 
-    def __str__(self):
-        return self.title
-
-
 class RentalDate(models.Model):
     idRentalDate = models.AutoField(primary_key=True)
     dateFrom = models.DateField()

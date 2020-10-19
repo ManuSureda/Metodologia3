@@ -74,8 +74,11 @@
 
             <form method="post" class="bg-white p-md-5 p-4 mb-5 border"> {% csrf_token %}
 
+
+
+
               <div class="row">
-                <div class="col-md-12 form-group">
+                <div class="col-md-6 form-group">
                   <label class="text-black font-weight-bold">Email</label>
                   {{ form.email }}
                 </div>
@@ -120,9 +123,9 @@
           <div class="col-md-5" data-aos="fade-up" data-aos-delay="200">
             <div class="row">
               <div class="col-md-10 ml-auto contact-info">
-                <p><span class="d-block">Address:</span> <span class="text-black"> 98 West 21th Street, Suite 721 New York NY 10016</span></p>
-                <p><span class="d-block">Phone:</span> <span class="text-black"> (+1) 435 3533</span></p>
-                <p><span class="d-block">Email:</span> <span class="text-black"> info@yourdomain.com</span></p>
+                <p><span class="d-block">Property Title:</span> <span class="text-black"> {{ property.0.title }}</span></p>
+                <p><span class="d-block">City:</span> <span class="text-black"> {{ property.0.city }}</span></p>
+                <p><span class="d-block">Description:</span> <span class="text-black"> {{ property.0.description }}</span></p>
               </div>
             </div>
           </div>
