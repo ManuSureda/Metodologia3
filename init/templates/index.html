@@ -29,7 +29,7 @@
     <header class="site-header js-site-header">
       <div class="container-fluid">
         <div class="row align-items-center">
-          <div class="col-6 col-lg-4 site-logo" data-aos="fade"><a href="{% static 'index.html' %}">Property Rent UTN</a></div>
+          <div class="col-6 col-lg-4 site-logo" data-aos="fade"><a href="{% url 'index' %}">Property Rent UTN</a></div>
 
         </div>
       </div>
@@ -69,7 +69,9 @@
         <div class="row check-availabilty" id="">
           <div class="block-32" data-aos="fade-up" data-aos-offset="-200">
 
-            <form action="#">
+            <form action="{% url 'filter' %}" method="POST">
+                {% csrf_token %}
+              <input type="hidden" name="filter" value="true">
               <div class="row">
                 <div class="col-md-6 mb-3 mb-lg-0 col-lg-3">
                   <label for="checkin_date" class="font-weight-bold text-black">Check In</label>
@@ -91,11 +93,23 @@
                       <label for="passengers" class="font-weight-bold text-black">Passengers</label>
                       <div class="field-icon-wrap">
                         <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                        <select name="" id="passengers" class="form-control">
-                          <option value="">1</option>
-                          <option value="">2</option>
-                          <option value="">3</option>
-                          <option value="">4+</option>
+                        <select name="passengers" id="passengers" class="form-control">
+                          <option type="number" value="1">1</option>
+                          <option type="number" value="2">2</option>
+                          <option type="number" value="3">3</option>
+                          <option type="number" value="4">4</option>
+                          <option type="number" value="5">5</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-3 mb-md-0">
+                      <label class="font-weight-bold text-black">Cities</label>
+                      <div class="field-icon-wrap">
+                        <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                        <select name="idCiudad" id="idCiudad" class="form-control">
+                            {% for c in cities %}
+                                <option value="{{ c.id }}">{{ c.name }}</option>
+                            {% endfor %}
                         </select>
                       </div>
                     </div>
@@ -120,7 +134,7 @@
       <div class="container">
 
         <div class="row">
-          {% for property in object_list %}
+          {% for property in properties %}
           <div class="col-lg-4 col-md-6 col-sm-6 col-12 post mb-5" data-aos="fade-up" data-aos-delay="100">
             <div class="media media-custom d-block mb-4 h-100">
 

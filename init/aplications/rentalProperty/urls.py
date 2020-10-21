@@ -15,10 +15,11 @@ Including another URLconf
 """
 
 from django.urls import path
-from .views import Reserve, PropertyList
+from .views import Reserve, index, filter
 
 urlpatterns = [
-    path('', PropertyList.as_view(), name='index'),
+    path('', index, name='index'),
+    path('filter/', filter, name='filter'),
     path('reserve/<int:pk>/', Reserve.as_view(), name='reserve'),
 ]
 

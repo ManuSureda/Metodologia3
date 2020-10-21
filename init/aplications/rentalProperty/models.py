@@ -39,6 +39,9 @@ class Reservation(models.Model):
     class Meta:
         verbose_name_plural = 'Reservations'
 
+    def __str__(self):
+        return self.email
+
 
 
 class RentalDate(models.Model):
