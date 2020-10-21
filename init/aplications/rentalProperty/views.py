@@ -1,11 +1,9 @@
-from django.http import HttpResponseRedirect
+
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView, DetailView
 from .forms import reserveForm
 from .models import *
-
-
 
 # Create your views here.
 def index(request):
@@ -30,7 +28,7 @@ def filter(request):
     if request.method == 'POST':
       filterProperty = Property.objects.all().filter(
           city=request.POST['idCiudad'],
-          maxPax=request.POST['passengers'])
+          maxPax__lte=request.POST['passengers'])
       context = {
             'properties': filterProperty,
             'cities': cities
@@ -45,7 +43,6 @@ class Reserve(CreateView):
 
     def post(self, request, *args, **kwargs):
         super(Reserve, self).post(request)
-
 
     def form_valid(self, form):
         form.instance.property = get_object_or_404(Property, id=self.kwargs.get('pk'))
