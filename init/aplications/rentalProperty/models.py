@@ -12,6 +12,7 @@ class City(models.Model):
     def __str__(self):
         return self.name
 
+
 class Property(models.Model):
     city = models.ForeignKey(City, null=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=500)
@@ -43,11 +44,13 @@ class Reservation(models.Model):
         return self.email
 
 
-
 class RentalDate(models.Model):
     date = models.DateField()
     property = models.ForeignKey(Property, null=True, on_delete=models.SET_NULL)
-    reservation = models.ForeignKey(Reservation, null=True,  on_delete=models.SET_NULL)
+    reservation = models.ForeignKey(Reservation, on_delete=models.PROTECT, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = 'RentalDates'
+
+    def __str__(self):
+        return str(self.date.strftime("%Y/%m/%d"))

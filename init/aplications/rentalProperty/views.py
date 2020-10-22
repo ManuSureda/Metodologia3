@@ -1,15 +1,16 @@
-
+from django.db.models import QuerySet
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView, DetailView
 from .forms import reserveForm
 from .models import *
 
+
 # Create your views here.
 def index(request):
     cities = City.objects.all()
     if 'filter' in request.GET:
-        filterProperty = Property.objects.all().filter(city=request.GET['idCiudad'])
+        filterProperty = Property.objects.all().filter(city=request.GET['idCity'])
         context = {
             'properties': filterProperty,
             'cities': cities
@@ -23,26 +24,29 @@ def index(request):
         }
         return render(request, '../templates/index.html', context)
 
+
 def filter(request):
     cities = City.objects.all()
     if request.method == 'POST':
-      filterProperty = Property.objects.all().filter(
-          city=request.POST['idCiudad'],
-          rentaldate__date__lte=request.POST['dateFrom'],
-          rentaldate__date__gte=request.POST['dateTo'],
-          maxPax__lte=request.POST['passengers'])
-      context = {
+        filterProperty = Property.objects.all().filter(
+            city=request.POST['idCity'],
+            rentaldate__date__gte=request.POST['dateFrom'],
+            rentaldate__date__lte=request.POST['dateTo'],
+            rentaldate__reservation__isnull=True,
+            maxPax__gte=request.POST['passengers']).distinct().order_by('id')
+        context = {
             'properties': filterProperty,
-            'cities': cities
-      }
-      return render(request, '../templates/filter.html', context)
+            'cities': cities,
+
+        }
+        return render(request, '../templates/filter.html', context)
+
 
 class Reserve(CreateView):
     model = Reservation
     form_class = reserveForm
     success_url = reverse_lazy('index')
     template_name = 'reservation.html'
-
 
     def form_valid(self, form):
         form.instance.property = get_object_or_404(Property, id=self.kwargs.get('pk'))
