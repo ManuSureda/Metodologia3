@@ -28,6 +28,8 @@ def filter(request):
     if request.method == 'POST':
       filterProperty = Property.objects.all().filter(
           city=request.POST['idCiudad'],
+          rentaldate__date__lte=request.POST['dateFrom'],
+          rentaldate__date__gte=request.POST['dateTo'],
           maxPax__lte=request.POST['passengers'])
       context = {
             'properties': filterProperty,
@@ -41,8 +43,6 @@ class Reserve(CreateView):
     success_url = reverse_lazy('index')
     template_name = 'reservation.html'
 
-    def post(self, request, *args, **kwargs):
-        super(Reserve, self).post(request)
 
     def form_valid(self, form):
         form.instance.property = get_object_or_404(Property, id=self.kwargs.get('pk'))
