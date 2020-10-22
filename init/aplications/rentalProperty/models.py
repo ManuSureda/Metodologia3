@@ -1,6 +1,6 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-
+from django.utils import timezone
 
 # Create your models here.
 class City(models.Model):
@@ -33,15 +33,14 @@ class Reservation(models.Model):
     name = models.CharField(max_length=120)
     lastName = models.CharField(max_length=120)
     email = models.EmailField(max_length=200)
-    dateFrom = models.DateField()
-    dateTo = models.DateField()
+    date = models.DateField(default=timezone.now())
     totalCost = models.FloatField(validators=[MinValueValidator(0.0)], default=0.0)
 
     class Meta:
         verbose_name_plural = 'Reservations'
 
     def __str__(self):
-        return self.email
+        return str(self.date.strftime("%Y/%m/%d"))
 
 
 class RentalDate(models.Model):
