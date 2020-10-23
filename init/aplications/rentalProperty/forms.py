@@ -2,7 +2,7 @@ from django import forms
 from .models import *
 
 
-class reserveForm(forms.ModelForm):
+class detailForm(forms.ModelForm):
     class Meta:
         model = Reservation
         fields = ('name', 'lastName', 'email', 'totalCost')

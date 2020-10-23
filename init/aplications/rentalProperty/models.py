@@ -19,7 +19,7 @@ class Property(models.Model):
     description = models.CharField(max_length=1000)
     maxPax = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(100)])
     image = models.ImageField(upload_to='property', null=True)
-    dailyCost = models.FloatField(validators=[MinValueValidator(0.0)], default=0.0)
+    dailyCost = models.DecimalField(max_digits=10,decimal_places=2)
 
     class Meta:
         verbose_name_plural = 'Properties'
@@ -40,7 +40,7 @@ class Reservation(models.Model):
         verbose_name_plural = 'Reservations'
 
     def __str__(self):
-        return str(self.date.strftime("%Y/%m/%d"))
+        return str(self.date.strftime("%Y-%m-%d"))
 
 
 class RentalDate(models.Model):
@@ -50,6 +50,7 @@ class RentalDate(models.Model):
 
     class Meta:
         verbose_name_plural = 'RentalDates'
+        ordering = ('date', 'property')
 
     def __str__(self):
-        return str(self.date.strftime("%Y/%m/%d"))
+        return str(self.date.strftime("%Y-%m-%d"))
