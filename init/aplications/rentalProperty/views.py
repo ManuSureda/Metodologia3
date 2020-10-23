@@ -30,9 +30,6 @@ def index(request):
         return render(request, '../templates/index.html', context)
 
 
-
-
-
 def filter(request):
     cities = City.objects.all()
     if request.method == 'POST':
@@ -46,10 +43,10 @@ def filter(request):
             'properties': filterProperty,
             'cities': cities,
         }
-        global dateFrom
-        dateFrom = request.POST['dateFrom']
-        global dateTo
-        dateTo = request.POST['dateTo']
+        # global dateFrom
+        # dateFrom = request.POST['dateFrom']
+        # global dateTo
+        # dateTo = request.POST['dateTo']
         # return render(request, '../templates/filter.html', context)
         return render(request, '../templates/index.html', context)
 
@@ -61,17 +58,28 @@ def detail(request, id=0):
     return redirect('/')
 
 
+def checkAvailability(dateFrom, dateTo, idProperty):
+    flag = False
+    dateList = RentalDate.objects.filter(
+        property=idProperty
+    ).distinct().order_by('id')
+    print("esto es date list: -----------------------------------------")
+    print(dateList)
+    # for rentalDate in dateList
+#aca voy a revisar que rentalDate tenga reserve en null
+
 def reserve(request, id=0):
     if request.method == "POST":
-        print("AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
-        print(dateFrom)
-        fecha1 = datetime.strptime(dateTo, "%Y-%m-%d")
-        fecha2 = datetime.strptime(dateFrom, "%Y-%m-%d")
-        totalDaysStr = fecha1 - fecha2
+        # print("AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
+        # print(request.POST['dateFromR'])
+        # print(request.POST['dateToR'])
+        dateFrom = datetime.strptime(request.POST['dateFromR'], "%Y-%m-%d")
+        dateTo = datetime.strptime(request.POST['dateToR'], "%Y-%m-%d")
+        totalDaysStr = dateTo - dateFrom
         totalDays = str(totalDaysStr).split()[0]
-        print(totalDays)
+        # print(totalDays)
 
-
+        checkAvailability(dateFrom, dateTo, id)
 
         property = Property.objects.get(id=id)
         getcontext().prec = 10
