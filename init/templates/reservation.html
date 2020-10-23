@@ -47,6 +47,7 @@
          background-size: cover;
         }
 
+
     </style>
     <div class="container">
         <div class="row site-hero-inner justify-content-center align-items-center">
@@ -83,25 +84,22 @@
                     </select>
 
                     <div class="row">
-                        <div class="col-md-6 form-group">
+                        <div class="col-md-12 form-group">
                             <label class="text-black font-weight-bold">Email</label>
                             <input type="email" name="email" id="email" class="form-control ">
                         </div>
+
                     </div>
 
-                    <div class="col-md-6 mb-3 mb-lg-0 col-lg-3">
-                      <label class="font-weight-bold text-black">Check In</label>
-                      <div class="field-icon-wrap">
-                        <div class="icon"><span class="icon-calendar"></span></div>
-                        <input type="date" name="dateFromR" class="form-control" required>
-                      </div>
-                    </div>
-                    <div class="col-md-6 mb-3 mb-lg-0 col-lg-3">
-                      <label  class="font-weight-bold text-black">Check Out</label>
-                      <div class="field-icon-wrap">
-                        <div class="icon"><span class="icon-calendar"></span></div>
-                        <input type="date" name="dateToR" class="form-control" required>
-                      </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label class="text-black font-weight-bold">Date Check In</label>
+                            <input type="date" name="dateFromR" id="dateFrom" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="text-black font-weight-bold">Date Check Out</label>
+                            <input type="date" name="dateToR" id="dateTo" class="form-control" required>
+                        </div>
                     </div>
 
                     <div class="row">
@@ -149,6 +147,7 @@
          -o-background-size: cover;
          background-size: cover;
         }
+
 
     </style>
 
@@ -238,14 +237,22 @@
 
 
 <script src="{% static 'js/main.js' %}"></script>
+  <script>
+            (function() {
+                const Dfrom = document.getElementById("dateFrom");
+                const Dto = document.getElementById("dateTo");
+
+                Dfrom.min = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().split("T")[0];;
+                Dfrom.addEventListener("change", updateDateToInput, false);
+
+
+                function updateDateToInput(event) {
+                    let newMin = event.srcElement.value;
+                    Dto.value = "";
+                    Dto.min = newMin;
+                }
+            })();
+   </script>
 </body>
 </html>
 
-<!--<form method="post">{% csrf_token %}-->
-<!--    <input type="text" value="{{ idProperty }}" name="property" required id="id_property" style="display: none;" disabled >-->
-<!--    <select name="property" required="" id="id_property" style="display: none;" disabled>-->
-<!--      <option value="{{ property }}" selected="{{ property }}"></option>-->
-<!--    </select>-->
-<!--    {{ form.as_p }}-->
-<!--    <input type="submit" value="Save">-->
-<!--</form>&ndash;&gt;-->

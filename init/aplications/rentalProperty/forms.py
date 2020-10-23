@@ -1,15 +1,17 @@
 from django import forms
-from .models import *
+import datetime
+from bootstrap_datepicker_plus import DateTimePickerInput
+
+from .models import RentalDate
 
 
-class detailForm(forms.ModelForm):
-    class Meta:
-        model = Reservation
-        fields = ('name', 'lastName', 'email', 'totalCost')
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'lastName': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
-            'totalCost': forms.NumberInput(attrs={'class': 'form-control', 'readonly': True}),
-        }
+# class dateForm(forms):
+#         dateFrom = forms.DateField(label="", input_formats=['%Y-%m-%d'], help_text="Desde",
+#                                    widget=DateTimePickerInput(
+#                                        format='%Y-%m-%d',
+#                                        options={'minDate': (datetime.datetime.today().strftime("%Y-%m-%d"))}).start_of(
+#                                        'event days'))
+#         dateTo = forms.DateField(label="", input_formats=['%Y-%m-%d'], help_text="Hasta",
+#                                  widget=DateTimePickerInput(format='%Y-%m-%d').end_of('event days'))
+
 
