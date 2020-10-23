@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView, DetailView
 from .forms import detailForm
 from .models import *
+from django.contrib import messages
 
 
 # Create your views here.
@@ -58,38 +59,102 @@ def detail(request, id=0):
     return redirect('/')
 
 
-def checkAvailability(dateFrom, dateTo, idProperty):
-    flag = False
+def checkAvailability(dFrom, dTo, idProperty):
+    flag = True
+    # dateFrom = datetime.strptime(dFrom, "%Y-%m-%d")
+    # dateTo = datetime.strptime(dTo, "%Y-%m-%d")
     dateList = RentalDate.objects.filter(
-        property=idProperty
+        property=idProperty,
+        # rentaldate__date__gte=dateFrom,
+        # rentaldate__date__lte=dateTo
     ).distinct().order_by('id')
-    print("esto es date list: -----------------------------------------")
-    print(dateList)
-    # for rentalDate in dateList
-#aca voy a revisar que rentalDate tenga reserve en null
+    print("esto es dateList")
+    for rentalDate in dateList:
+        print(rentalDate.reservation.email)
+        print(rentalDate.date)
+        print(rentalDate.property)
+        if dFrom.date() >= rentalDate.date <= dTo.date():
+            print("entre al if jeje --------------")
+            if not rentalDate.reservation is None:
+                flag = False
+
+    return flag
+
 
 def reserve(request, id=0):
     if request.method == "POST":
-        # print("AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
-        # print(request.POST['dateFromR'])
-        # print(request.POST['dateToR'])
         dateFrom = datetime.strptime(request.POST['dateFromR'], "%Y-%m-%d")
         dateTo = datetime.strptime(request.POST['dateToR'], "%Y-%m-%d")
         totalDaysStr = dateTo - dateFrom
         totalDays = str(totalDaysStr).split()[0]
-        # print(totalDays)
 
-        checkAvailability(dateFrom, dateTo, id)
+        flag = checkAvailability(dateFrom, dateTo, id)
+
+        print(flag)
+
+        if not flag:
+            print("entre al not flag")
+            messages.add_message(request, messages.INFO, "the dates you have chosen has already been taken")
+            return redirect('/detail/'+id)#mal
 
         property = Property.objects.get(id=id)
-        getcontext().prec = 10
+
+        getcontext().prec = 10  # no se que es
+
         totalCost = property.dailyCost * int(totalDays) + (property.dailyCost * int(totalDays)) * Decimal(1.08)
+
         name = request.POST['name']
         lastName = request.POST['lastName']
         email = request.POST['email']
 
         r = Reservation(property=property, name=name, lastName=lastName, email=email, totalCost=totalCost)
         r.save()
+
+        datesList = RentalDate.objects.filter(property=id)
+        for rentalDate in datesList:
+            rentalDate.reservation = r
+            rentalDate.save()
+
+        print("aa")
+        print("aa")
+        print("aa")
+        print("aa")
+        print("aa")
+        print("aa")
+        print("aa")
+        for rentalDate in datesList:
+            print(rentalDate.property)
+            print(rentalDate.reservation.email)
+            print(rentalDate.date)
+
+
+        print("aa")
+        print("aa")
+        print("aa")
+        print("aa")
+        print("aa")
+        print("aa")
+        print("aa")
+
+        # for i in request.POST['date'].value():
+        #     dte = int(i)
+        #     rd = RentDate.objects.get(id=dte)
+        #     rd.reservation = r
+        #     rd.save()
+        #     finalDates = RentDate.objects.filter(reservation=r.id)
+
+        # reservationList = Reservation.objects.all()
+
+        # print("esto es reservation list-------------------------------------------------------------------------------")
+        # for res in reservationList:
+        #     print(res.property)
+        #     print(res.name)
+        #     print(res.lastName)
+        #     print(res.email)
+        #     print(res.date)
+        #     print(res.totalCost)
+
+        # print(reservationList)
         # propertyDates = RentalDate.objects.filter(property=property.id)
         # for i in propertyDates:
         #     dte = int(i)

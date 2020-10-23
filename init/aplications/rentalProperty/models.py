@@ -45,12 +45,12 @@ class Reservation(models.Model):
 
 class RentalDate(models.Model):
     date = models.DateField()
-    property = models.ForeignKey(Property, null=True, on_delete=models.SET_NULL)
+    property = models.ForeignKey(Property, on_delete=models.PROTECT, blank=False, null=False)
     reservation = models.ForeignKey(Reservation, on_delete=models.PROTECT, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = 'RentalDates'
         ordering = ('date', 'property')
 
-    def __str__(self):
-        return str(self.date.strftime("%Y-%m-%d"))
+    # def __str__(self):
+    #     return str(self.date.strftime("%Y-%m-%d"))
