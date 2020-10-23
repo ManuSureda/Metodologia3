@@ -30,6 +30,9 @@ def index(request):
         return render(request, '../templates/index.html', context)
 
 
+
+
+
 def filter(request):
     cities = City.objects.all()
     if request.method == 'POST':
@@ -42,9 +45,13 @@ def filter(request):
         context = {
             'properties': filterProperty,
             'cities': cities,
-
         }
-        return render(request, '../templates/filter.html', context)
+        global dateFrom
+        dateFrom = request.POST['dateFrom']
+        global dateTo
+        dateTo = request.POST['dateTo']
+        # return render(request, '../templates/filter.html', context)
+        return render(request, '../templates/index.html', context)
 
 
 def detail(request, id=0):
@@ -56,9 +63,19 @@ def detail(request, id=0):
 
 def reserve(request, id=0):
     if request.method == "POST":
+        print("AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
+        print(dateFrom)
+        fecha1 = datetime.strptime(dateTo, "%Y-%m-%d")
+        fecha2 = datetime.strptime(dateFrom, "%Y-%m-%d")
+        totalDaysStr = fecha1 - fecha2
+        totalDays = str(totalDaysStr).split()[0]
+        print(totalDays)
+
+
+
         property = Property.objects.get(id=id)
         getcontext().prec = 10
-        totalCost = property.dailyCost * Decimal(1.08)
+        totalCost = property.dailyCost * int(totalDays) + (property.dailyCost * int(totalDays)) * Decimal(1.08)
         name = request.POST['name']
         lastName = request.POST['lastName']
         email = request.POST['email']
