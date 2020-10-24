@@ -80,10 +80,11 @@
                 <img src="{{ property.image.url }}" alt="Image" class="img-fluid rounded">
             </div>
             <div class="col-md-12 col-lg-4 order-lg-1" data-aos="fade-up">
-                <h2 class="heading">Thanks: {{ reservation.name }}</h2>your reservation code is: {{ reservation.code }}!
+                <h2 class="heading">Thanks, {{ reservation.name }} ! </h2>
                 <p class="mb-6">
                     Your reservation <span class="mr-8 font-family-serif"><em>{{ property.title }}</em></span> for a total of
                     $<span class="mr-8 font-family-serif"><em>{{ total }}</em></span> has been confirmed successfully.
+                    Reservation code is: <span class="mr-8 font-family-serif"><em>{{ reservation.code }}</em></span>
                 </p>
                 <p><a href="{% url 'index' %}" class="btn btn-primary text-white py-2 mr-3">
                     Go back to the start screen </a> </p>
