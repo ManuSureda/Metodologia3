@@ -48,6 +48,7 @@
         }
 
 
+
     </style>
     <div class="container">
         <div class="row site-hero-inner justify-content-center align-items-center">
@@ -88,17 +89,13 @@
                             <label class="text-black font-weight-bold">Email</label>
                             <input type="email" name="email" id="email" class="form-control ">
                         </div>
-
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 form-group">
-                            <label class="text-black font-weight-bold">Date Check In</label>
-                            <input type="date" name="dateFromR" id="dateFrom" class="form-control" required>
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label class="text-black font-weight-bold">Date Check Out</label>
-                            <input type="date" name="dateToR" id="dateTo" class="form-control" required>
+                        <div class="col-md-12 form-group">
+                            <label class="text-black font-weight-bold">Choose dates</label>
+                            <select name="dateList" id="dateList" class="form-control" required multiple>
+                                {% for dates in rentalDates %}
+                                <option value="{{ dates.id }}">{{ dates.date }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
 
@@ -147,6 +144,7 @@
          -o-background-size: cover;
          background-size: cover;
         }
+
 
 
     </style>
@@ -237,7 +235,7 @@
 
 
 <script src="{% static 'js/main.js' %}"></script>
-  <script>
+<script>
             (function() {
                 const Dfrom = document.getElementById("dateFrom");
                 const Dto = document.getElementById("dateTo");
@@ -252,7 +250,8 @@
                     Dto.min = newMin;
                 }
             })();
-   </script>
+
+</script>
 </body>
 </html>
 

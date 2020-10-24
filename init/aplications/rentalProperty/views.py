@@ -1,11 +1,7 @@
 from datetime import datetime
 from decimal import *
 
-from django.db.models import QuerySet
-from django.shortcuts import get_object_or_404, render, redirect
-from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, ListView, UpdateView, DetailView
-from .forms import detailForm
+from django.shortcuts import render, redirect
 from .models import *
 from django.contrib import messages
 
@@ -55,7 +51,8 @@ def filter(request):
 def detail(request, id=0):
     if request.method == "GET":
         property = Property.objects.filter(id=id)
-        return render(request, '../templates/reservation.html', {'property': property, })
+        rentalDates = RentalDate.objects.filter(property=id, reservation__isnull=True)
+        return render(request, '../templates/reservation.html', {'property': property, 'rentalDates': rentalDates, })
     return redirect('/')
 
 
@@ -83,6 +80,10 @@ def checkAvailability(dFrom, dTo, idProperty):
 
 def reserve(request, id=0):
     if request.method == "POST":
+        print("-------------------------------------")
+        for i in request.POST['dateList']:
+            print(int(i))
+        print("-------------------------------------")
         dateFrom = datetime.strptime(request.POST['dateFromR'], "%Y-%m-%d")
         dateTo = datetime.strptime(request.POST['dateToR'], "%Y-%m-%d")
         totalDaysStr = dateTo - dateFrom
