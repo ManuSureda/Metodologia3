@@ -81,8 +81,8 @@ def checkAvailability(dFrom, dTo, idProperty):
 def reserve(request, id=0):
     if request.method == "POST":
         print("-------------------------------------")
-        for i in request.POST['dateList']:
-            print(int(i))
+        for i in request.POST.getlist('dateList'):
+            print(i)
         print("-------------------------------------")
         dateFrom = datetime.strptime(request.POST['dateFromR'], "%Y-%m-%d")
         dateTo = datetime.strptime(request.POST['dateToR'], "%Y-%m-%d")
