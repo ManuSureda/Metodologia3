@@ -1,6 +1,7 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 # Create your models here.
 class City(models.Model):
@@ -19,7 +20,8 @@ class Property(models.Model):
     description = models.CharField(max_length=1000)
     maxPax = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(100)])
     image = models.ImageField(upload_to='property', null=True)
-    dailyCost = models.DecimalField(max_digits=10,decimal_places=2)
+    dailyCost = models.DecimalField(max_digits=10, decimal_places=2)
+    owner = models.ForeignKey(User, null=False, on_delete=models.SET('null'))
 
     class Meta:
         verbose_name_plural = 'Properties'
@@ -35,6 +37,7 @@ class Reservation(models.Model):
     email = models.EmailField(max_length=200)
     date = models.DateField(default=timezone.now())
     totalCost = models.FloatField(validators=[MinValueValidator(0.0)], default=0.0)
+    code = models.IntegerField()
 
     class Meta:
         verbose_name_plural = 'Reservations'
