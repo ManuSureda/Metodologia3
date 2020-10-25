@@ -1,7 +1,10 @@
+import os
+
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+
 
 # Create your models here.
 class City(models.Model):
@@ -14,12 +17,16 @@ class City(models.Model):
         return self.name
 
 
+def get_image_path(instance, filename):
+    return os.path.join('photos', filename)
+
+
 class Property(models.Model):
     city = models.ForeignKey(City, null=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=500)
     description = models.CharField(max_length=1000)
     maxPax = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(100)])
-    image = models.ImageField(upload_to='property', null=True)
+    image = models.ImageField(upload_to=get_image_path, blank=True, null=False)
     dailyCost = models.DecimalField(max_digits=10, decimal_places=2)
     owner = models.ForeignKey(User, null=False, on_delete=models.SET('null'))
 
