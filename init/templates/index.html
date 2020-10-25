@@ -166,7 +166,7 @@
                 <span class="meta-post">{{ property.city }} | Max Pax: {{ property.maxPax }}</span>
                 <h2 class="mt-0 mb-3"><a href="#">{{ property.title }}</a></h2>
                 <p>{{ property.description }}</p>
-                <p><span class="meta-post">Daily Cost: {{ property.dailyCost }}</span> <a href="{% url 'detail' property.id %}" class="btn btn-primary text-white">Reserve</a></p>
+                <p><span class="meta-post">Daily Cost: ${{ property.dailyCost }}</span> <a href="{% url 'detail' property.id %}" class="btn btn-primary text-white">Reserve</a></p>
               </div>
             </div>
 
