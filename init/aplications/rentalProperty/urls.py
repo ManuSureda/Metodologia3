@@ -15,7 +15,7 @@ Including another URLconf
 """
 
 from django.urls import path
-from .views import index, filter, detail, reserve, login, register
+from .views import index, filter, detail, reserve, login, register, my_reserved_properties
 
 urlpatterns = [
     path('', index, name='index'),
@@ -24,4 +24,5 @@ urlpatterns = [
     path('reserve/<int:id>/', reserve, name='thanks'),
     path('login', login, name='login'),
     path('register', register, name='register'),
+    path('my_reserved_properties', my_reserved_properties, name='my_reserved_properties'),
 ]

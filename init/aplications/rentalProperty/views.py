@@ -21,6 +21,36 @@ def index(request):
     return render(request, '../templates/index.html', context)
 
 
+def my_reserved_properties(request):
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            return redirect('/admin/')
+        else:
+            rents_per_reservation = []
+            reservations = Reservation.objects.filter(
+                rentaldate__reservation__isnull=False,
+                rentaldate__property__owner__id=request.user.id
+            ).distinct().order_by('code')
+            for r in reservations:
+                rents = RentalDate.objects.filter(reservation=r.id)  # array de fechas de alquiler con id de reserva
+                rents_per_reservation.append(rents)  # array de array
+            return render(request, '../templates/my_reserved_properties.html', {'reservations': rents_per_reservation})
+
+    # if request.user.is_authenticated:
+    #     if request.user.is_superuser:
+    #         return redirect('/admin/')
+    #     else:
+    #         rents_per_reservation = []
+    #         reservations = Reservation.objects.filter(
+    #             rentdate__estate__owner__id=request.user.id
+    #         ).distinct().order_by('code')
+    #         for r in reservations:
+    #             rents = RentDate.objects.filter(reservation=r.id)  # array de fechas de alquiler con id de reserva
+    #             rents_per_reservation.append(rents)  # array de array
+    #         return render(request, 'myapp/reservations.html', {'rents_per_reservation': rents_per_reservation})
+    # return redirect('/admin/')
+
+
 def register(request):
     # Creamos el formulario de autenticación vacío
     form = UserCreationForm()
@@ -46,13 +76,13 @@ def register(request):
 
 def login(request):
     if request.method == "POST":
-            username = request.POST['username']
-            password = request.POST['password']
+        username = request.POST['username']
+        password = request.POST['password']
 
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                do_login(request, user)
-                return redirect('/admin/')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            do_login(request, user)
+            return redirect('/admin/')
 
     return render(request, "../templates/login.html")
 
@@ -101,15 +131,14 @@ def reserve(request, id=0):
         lastName = request.POST['lastName']
         email = request.POST['email']
 
-        r = Reservation(property=property, name=name, lastName=lastName, email=email, totalCost=totalCost, code=random.randrange(999, 99999))
+        r = Reservation(property=property, name=name, lastName=lastName, email=email, totalCost=totalCost,
+                        code=random.randrange(999, 99999))
         r.save()
 
         for idRentalDate in listOfDays:
             RentalDate.objects.filter(id=idRentalDate).update(reservation=r)
 
-
         return render(request, '../templates/thanks.html',
                       {'property': property, 'reservation': r,
                        'total': round(r.totalCost, 2)}, )
     return redirect('/')
-
