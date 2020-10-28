@@ -36,20 +36,6 @@ def my_reserved_properties(request):
                 rents_per_reservation.append(rents)  # array de array
             return render(request, '../templates/my_reserved_properties.html', {'reservations': rents_per_reservation})
 
-    # if request.user.is_authenticated:
-    #     if request.user.is_superuser:
-    #         return redirect('/admin/')
-    #     else:
-    #         rents_per_reservation = []
-    #         reservations = Reservation.objects.filter(
-    #             rentdate__estate__owner__id=request.user.id
-    #         ).distinct().order_by('code')
-    #         for r in reservations:
-    #             rents = RentDate.objects.filter(reservation=r.id)  # array de fechas de alquiler con id de reserva
-    #             rents_per_reservation.append(rents)  # array de array
-    #         return render(request, 'myapp/reservations.html', {'rents_per_reservation': rents_per_reservation})
-    # return redirect('/admin/')
-
 
 def register(request):
     # Creamos el formulario de autenticación vacío
@@ -82,7 +68,8 @@ def login(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             do_login(request, user)
-            return redirect('/admin/')
+            # return redirect('/admin/')
+            return render(request, "../templates/index.html")
 
     return render(request, "../templates/login.html")
 
