@@ -28,7 +28,7 @@
 </head>
 <body>
 
-
+{% block header %}
 <header class="site-header js-site-header">
     <div class="container-fluid">
         <div class="row align-items-center">
@@ -49,10 +49,9 @@
                             <div class="col-md-6 mx-auto">
                                 <ul class="list-unstyled menu">
                                     <li class="active"><a href="{% url 'index' %}">Home</a></li>
-                                    <li><a href="{% url 'login' %}">Log In</a></li>
-                                    <li><a href="{% url 'logout' %}">Log Out</a></li>
-                                    <li><a href="{% url 'register' %}">Register</a></li>
-                                    <li><a href="{% url 'my_reserved_properties' %}">Reservations</a></li>
+                                    <li><a href="/login">Log In</a></li>
+<!--                                    <li><a href="{% url 'logout' %}">Log Out</a></li>-->
+<!--                                    <li><a href="{% url 'register' %}">Register</a></li>-->
                                 </ul>
                             </div>
                         </div>
@@ -63,6 +62,7 @@
     </div>
 </header>
 <!-- END head -->
+{% endblock %}
 
 <section class="site-hero overlay">
     <style type="text/css">
@@ -168,18 +168,16 @@
 
     <div class="container">
 
-
         <div class="row">
             {% for property in properties %}
             <div class="col-lg-4 col-md-6 col-sm-6 col-12 post mb-5" data-aos="fade-up" data-aos-delay="100">
                 <div class="media media-custom d-block mb-4 h-100">
-
                     <a href="{% url 'detail' property.id %}" class="mb-4 d-block"><img src="{{ property.image.url }}"
                                                                                        alt="Image placeholder"
                                                                                        class="img-fluid"></a>
                     <div class="media-body">
                         <span class="meta-post">{{ property.city }} | Max Pax: {{ property.maxPax }}</span>
-                        <h2 class="mt-0 mb-3"><a href="#">{{ property.title }}</a></h2>
+                        <h2 class="mt-0 mb-3"><a href="{% url 'detail' property.id %}">{{ property.title }}</a></h2>
                         <p>{{ property.description }}</p>
                         <p><span class="meta-post">Daily Cost: ${{ property.dailyCost }}</span> <a
                                 href="{% url 'detail' property.id %}" class="btn btn-primary text-white">Reserve</a></p>
@@ -195,6 +193,8 @@
 
 {% endblock %}
 
+
+{% block section %}
 <section class="section bg-image overlay">
     <style type="text/css">
         body {
@@ -217,7 +217,7 @@
         </div>
     </div>
 </section>
-
+{% endblock %}
 
 <footer class="section footer-section">
     <div class="container">

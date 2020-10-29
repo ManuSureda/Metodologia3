@@ -21,20 +21,20 @@ def index(request):
     return render(request, '../templates/index.html', context)
 
 
-def my_reserved_properties(request):
-    if request.user.is_authenticated:
-        if request.user.is_superuser:
-            return redirect('/admin/')
-        else:
-            rents_per_reservation = []
-            reservations = Reservation.objects.filter(
-                rentaldate__reservation__isnull=False,
-                rentaldate__property__owner__id=request.user.id
-            ).distinct().order_by('code')
-            for r in reservations:
-                rents = RentalDate.objects.filter(reservation=r.id)  # array de fechas de alquiler con id de reserva
-                rents_per_reservation.append(rents)  # array de array
-            return render(request, '../templates/my_reserved_properties.html', {'reservations': rents_per_reservation})
+# def my_reserved_properties1(request):
+#     if request.user.is_authenticated:
+#         if request.user.is_superuser:
+#             return redirect('/admin/')
+#         else:
+#             rents_per_reservation = []
+#             reservations = Reservation.objects.filter(
+#                 rentaldate__reservation__isnull=False,
+#                 rentaldate__property__owner__id=request.user.id
+#             ).distinct().order_by('code')
+#             for r in reservations:
+#                 rents = RentalDate.objects.filter(reservation=r.id)  # array de fechas de alquiler con id de reserva
+#                 rents_per_reservation.append(rents)  # array de array
+#             return render(request, '../templates/my_reserved_properties.html', {'reservations': rents_per_reservation})
 
 
 def register(request):
@@ -61,6 +61,10 @@ def register(request):
 
 
 def login(request):
+    return render(request, "../templates/login.html")
+
+
+def my_reserved_properties(request):
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
@@ -68,8 +72,22 @@ def login(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             do_login(request, user)
+            if request.user.is_authenticated:
+                if request.user.is_superuser:
+                    return redirect('/admin/')
+                else:
+                    rents_per_reservation = []
+                    reservations = Reservation.objects.filter(
+                        rentaldate__reservation__isnull=False,
+                        rentaldate__property__owner__id=request.user.id
+                    ).distinct().order_by('code')
+                    for r in reservations:
+                        rents = RentalDate.objects.filter(
+                            reservation=r.id)  # array de fechas de alquiler con id de reserva
+                        rents_per_reservation.append(rents)  # array de array
+                    return render(request, '../templates/my_reserved_properties.html',
+                                  {'reservations': rents_per_reservation})
             # return redirect('/admin/')
-            return render(request, "../templates/index.html")
 
     return render(request, "../templates/login.html")
 
@@ -112,14 +130,14 @@ def reserve(request, id=0):
 
         listOfDays = request.POST.getlist('dateList')
         amountOfDays = len(listOfDays)
-        totalCost = property.dailyCost * amountOfDays + (property.dailyCost * amountOfDays) * Decimal(1.08)
+        totalCost = (property.dailyCost + property.dailyCost * Decimal(0.08)) * amountOfDays
 
         name = request.POST['name']
         lastName = request.POST['lastName']
         email = request.POST['email']
-
+        pax = request.POST['pax']
         r = Reservation(property=property, name=name, lastName=lastName, email=email, totalCost=totalCost,
-                        code=random.randrange(999, 99999))
+                        code=random.randrange(999, 99999), pax=pax)
         r.save()
 
         for idRentalDate in listOfDays:

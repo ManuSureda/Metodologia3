@@ -25,7 +25,7 @@ class Property(models.Model):
     city = models.ForeignKey(City, null=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=500)
     description = models.CharField(max_length=1000)
-    maxPax = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(100)])
+    maxPax = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1)])
     image = models.ImageField(upload_to=get_image_path, blank=True, null=False)
     dailyCost = models.DecimalField(max_digits=10, decimal_places=2)
     owner = models.ForeignKey(User, null=False, on_delete=models.SET('null'))
@@ -45,6 +45,7 @@ class Reservation(models.Model):
     date = models.DateField(default=timezone.now())
     totalCost = models.FloatField(validators=[MinValueValidator(0.0)], default=0.0)
     code = models.IntegerField()
+    pax = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1)])
 
     class Meta:
         verbose_name_plural = 'Reservations'
