@@ -128,8 +128,10 @@
                         <p><span class="d-block">City:</span> <span class="text-black"> {{ property.0.city }}</span></p>
                         <p><span class="d-block">Description:</span> <span class="text-black"> {{ property.0.description }}</span>
                         </p>
-                        <p><span class="d-block">Daily cost:</span> <span class="text-black"> {{ property.0.dailyCost }}</span>
+                        <p><span class="d-block">Daily cost (comission 8%):</span> <span class="text-black"> ${{ property.0.dailyCost }}</span>
                         </p>
+                        <p><span class="d-block">Total Cost:</span> <span id="price-wrapper" hidden="true" class="text-black"></span>
+                        </p> <input id="dailyRate" value={{ property.0.dailyCost }} hidden=true>
                     </div>
                 </div>
             </div>
@@ -137,6 +139,35 @@
     </div>
 </section>
 
+    <script>
+        let options = document.getElementById("dateList").options;
+        let dailyRate = document.getElementById("dailyRate").value;
+        let wrapper = document.getElementById("price-wrapper");
+
+
+        document.getElementById("dateList").addEventListener('change', function (e) {
+            console.log("entre a la funcion")
+            let count = 0;
+            for (var i = 0; i < options.length; i++) {
+                console.log("entre")
+                if (options[i].selected) count++;
+            }
+            if (count === 0) {
+                wrapper.hidden = true
+                button.disabled = true
+            } else {
+
+                subt = (dailyRate * count)
+                com = Math.round((subt * 0.08) * 100) / 100
+                console.log("ajsdfasdfasdfasdfasdf-----------------------------")
+                console.log(com)
+                let totalCost = subt + com
+                console.log(totalCost)
+                wrapper.hidden = false
+                wrapper.innerHTML = "$" + totalCost
+            }
+        });
+    </script>
 
 <section class="section bg-image overlay">
     <style type="text/css">
@@ -147,9 +178,6 @@
          -o-background-size: cover;
          background-size: cover;
         }
-
-
-
     </style>
 
     <div class="container">
