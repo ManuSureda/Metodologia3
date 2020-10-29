@@ -1,4 +1,3 @@
-from datetime import datetime
 from decimal import *
 from random import random
 from django.contrib.auth import login as do_login
@@ -7,7 +6,7 @@ from django.shortcuts import render, redirect
 from .models import *
 import random
 from datetime import datetime
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import UserCreationForm
 
 
 def index(request):
@@ -19,23 +18,6 @@ def index(request):
         'cities': cities
     }
     return render(request, '../templates/index.html', context)
-
-
-# def my_reserved_properties1(request):
-#     if request.user.is_authenticated:
-#         if request.user.is_superuser:
-#             return redirect('/admin/')
-#         else:
-#             rents_per_reservation = []
-#             reservations = Reservation.objects.filter(
-#                 rentaldate__reservation__isnull=False,
-#                 rentaldate__property__owner__id=request.user.id
-#             ).distinct().order_by('code')
-#             for r in reservations:
-#                 rents = RentalDate.objects.filter(reservation=r.id)  # array de fechas de alquiler con id de reserva
-#                 rents_per_reservation.append(rents)  # array de array
-#             return render(request, '../templates/my_reserved_properties.html', {'reservations': rents_per_reservation})
-
 
 def register(request):
     # Creamos el formulario de autenticación vacío

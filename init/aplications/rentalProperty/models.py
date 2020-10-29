@@ -1,6 +1,6 @@
 import os
 
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -63,5 +63,3 @@ class RentalDate(models.Model):
         verbose_name_plural = 'RentalDates'
         ordering = ('date', 'property')
 
-    # def __str__(self):
-    #     return str(self.date.strftime("%Y-%m-%d"))
